@@ -83,7 +83,6 @@ function K3Template() {
         {/* <Nav /> */}
         <div className="video-edit-container">
           <div style={testStyle}></div>
-          {/* {outputVideo ? <OutputModal /> : <></>} */}
           <div className="control-container">
             <video
               src={staticVid}

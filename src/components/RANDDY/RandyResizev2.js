@@ -35,10 +35,10 @@ function RandyResizev2() {
         <>
             <div style={videoContainerStyle}>
                 <div>
-                <video 
+                {/* <video 
                     ref={video}
                     style={videoStyle}
-                    src={require('../../assets/k3.mp4')} />
+                    src={require('../../assets/k3.mp4')} /> */}
                 <Cropper 
                     cropWidth={100}
                     cropHeight={100}

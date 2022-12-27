@@ -41,9 +41,9 @@ function RandyResize() {
       <div 
         style={{position: 'relative'}}
       >
-        <video src={require('../../assets/k3.mp4')}
+        {/* <video src={require('../../assets/k3.mp4')}
         style={{maxWidth: '405px', maxHeight: '228', }}
-        />
+        /> */}
         <div
             ref={container}
             onMouseDown={handleMouseDown}

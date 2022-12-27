@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { UseCtx } from "../../contexts/Context";
 
-function CropBot({
+function CropFullHeightv2({
   video,
   cropWidth,
   cropHeight,
@@ -104,6 +104,7 @@ function CropBot({
         y: boundingY,
       });
 
+      //if mouse is on left edge
 
       //if crop hits left bounds
       if (
@@ -206,4 +207,4 @@ function CropBot({
   );
 }
 
-export default CropBot;
+export default CropFullHeightv2;

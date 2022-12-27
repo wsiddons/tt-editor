@@ -7,6 +7,7 @@ function Trim() {
   const trimStyle = {
     display: "flex",
     justifyContent: "space-between",
+    backgroundColor: '#1a1a1a',
     width: "30%",
     margin: "3vh",
   };

@@ -7,6 +7,7 @@ function Landing() {
       <div className="landing-container">
         <div className="landing-text">
           <h1>CROPTOK</h1>
+          <h3>**pre-pre-alpha</h3>
           <p>
             Easily edit your YouTube content into clips formatted for TikTok in
             just a click of a button

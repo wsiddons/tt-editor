@@ -23,6 +23,7 @@ export function useFfmpeg() {
    * @param {*} clipStart
    * @param {*} clipEnd
    */
+  
   const fullHeightify = async (
     videoEle,
     currentVideo,
@@ -33,7 +34,7 @@ export function useFfmpeg() {
     clipEnd
   ) => {
     await ffmpeg.load();
-
+    console.log(videoEle)
     const multi = videoEle.current.videoWidth / videoEle.current.offsetWidth;
 
     // calculate bottom crop coordinates

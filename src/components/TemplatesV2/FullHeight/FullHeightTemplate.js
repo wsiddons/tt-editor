@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UseCtx } from "../../../contexts/Context";
 import { useFfmpeg } from "../../../hooks/useFfmpeg";
+import CropFull from "../../Croppers/CropFull";
 import CropFullHeight from "../../Croppers/CropFullHeight";
 import Trim from "../../Trim/Trim";
 import OutputModal from "../K3Template/OutputModal";
@@ -28,6 +29,7 @@ function FullHeightTemplate() {
     endTime,
     outputVideo,
     setFileName,
+    videoEle
   } = UseCtx();
 
   useEffect(() => {
@@ -40,7 +42,7 @@ function FullHeightTemplate() {
 
   const makeClip = async () => {
     await fullHeightify(
-      video,
+      videoEle,
       currentVideo,
       overlay,
       botCrop,
@@ -76,21 +78,8 @@ function FullHeightTemplate() {
         {/* <Nav /> */}
         <div className="video-edit-container">
           <div style={testStyle}></div>
-          {/* {outputVideo ? <OutputModal /> : <></>} */}
           <div className="control-container">
-            <video
-              src={staticVid}
-              ref={video}
-              style={videoStyle}
-              controls={true}
-            />
-            <CropFullHeight
-              cropWidth={botCropWidth}
-              video={video}
-              id={"videoCrop"}
-              aspectRatio={9 / 16}
-              borderColor={"green"}
-            />
+            <CropFull /> 
             <Trim />
             <div className="button-container">
               <div className="left-buttons">
@@ -104,7 +93,6 @@ function FullHeightTemplate() {
               </div>
               <div className="right-buttons">
                 <h3 onClick={async () => await makeClip()}>Create Video</h3>
-                {/* <h3 onClick={() => setTorf(!torf)}>toggle modal</h3> */}
               </div>
             </div>
           </div>

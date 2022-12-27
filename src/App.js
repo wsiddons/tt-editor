@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import Landing from "./components/Landing/Landing";
 import Menuv2 from "./components/Menu/Menuv2";
+import PrivacyPolicy from "./components/PPTOS/PrivacyPolicy";
+import TOS from "./components/PPTOS/TOS";
 import RandyResizev2 from "./components/RANDDY/RandyResizev2";
 import FullWidthWithCam from "./components/Templates/FullWidthWithCam/FullWidthWithCam";
 import HorizontalSplitEditor from "./components/Templates/HorizontalSplitTemplate/HorizontalSplitEditor";
@@ -24,6 +26,8 @@ function App() {
         <Route path="/full-template" element={<FullHeightTemplate />} />
         <Route path="/full-width-cam-template" element={<FullWidthWithCam />} />
         <Route path="/dirtyburger" element={<RandyResizev2 />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TOS />} />
       </Routes>
     </Provider>
   );

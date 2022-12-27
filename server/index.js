@@ -1,28 +1,28 @@
 const path = require("path");
 const express = require("express");
-const ytdl = require("ytdl-core");
+// const ytdl = require("ytdl-core");
 const fs = require("fs");
 
 const app = express(); // create express app
 
 const cors = require("cors");
 
-app.get("/download", async (req, res) => {
-  try {
-    const url = req.query.url;
-    const videoId = await ytdl.getURLVideoID(url);
-    const metaInfo = await ytdl.getInfo(url);
+// app.get("/download", async (req, res) => {
+//   try {
+//     const url = req.query.url;
+//     const videoId = await ytdl.getURLVideoID(url);
+//     const metaInfo = await ytdl.getInfo(url);
 
-    let data = {
-      url: "http://www.youtube.com/embed/" + videoId,
-      info: metaInfo.formats,
-    };
+//     let data = {
+//       url: "http://www.youtube.com/embed/" + videoId,
+//       info: metaInfo.formats,
+//     };
 
-    return res.send(data);
-  } catch (err) {
-    return res.status(500);
-  }
-});
+//     return res.send(data);
+//   } catch (err) {
+//     return res.status(500);
+//   }
+// });
 // add middlewares\
 app.use(cors());
 

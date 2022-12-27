@@ -27,6 +27,9 @@ export function Provider({ children }) {
     // file name 
     const [fileName, setFileName] = useState('')
 
+    //video ele
+    const [videoEle, setVideoEle] = useState(null)
+
 
     const value = {
         currentVideo, 
@@ -46,7 +49,9 @@ export function Provider({ children }) {
         outputVideo,
         setOutputVideo,
         fileName,
-        setFileName
+        setFileName,
+        videoEle,
+        setVideoEle
     }
 
     return (
