@@ -9,7 +9,6 @@ import HorizontalSplitEditor from "./components/Templates/HorizontalSplitTemplat
 import DragDrop from "./components/Templates/K3 Template/DragDrop";
 import FullHeightTemplate from "./components/TemplatesV2/FullHeight/FullHeightTemplate";
 import K3Template from "./components/TemplatesV2/K3Template/K3Template";
-import SingleActionTest from "./components/Test/SingleActionTest";
 import { Provider } from "./contexts/Context";
 
 function App() {
@@ -19,7 +18,6 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/menu" element={<Menuv2 />} />
         <Route path="/upload" element={<DragDrop />} />
-        <Route path="/singleAction" element={<SingleActionTest />} />
         <Route path="/fps-template" element={<K3Template />} />
         {/* <Route path='/fps-template' element={<Editor />} /> */}
         <Route path="/50-50-template" element={<HorizontalSplitEditor />} />

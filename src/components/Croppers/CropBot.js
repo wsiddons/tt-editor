@@ -187,6 +187,7 @@ function CropBot({
   };
 
   return (
+    <>
     <div
       ref={crop1}
       style={cropStyle}
@@ -203,6 +204,7 @@ function CropBot({
         style={resizerStyle}
       ></div>
     </div>
+    </>
   );
 }
 

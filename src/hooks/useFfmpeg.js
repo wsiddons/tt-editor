@@ -34,7 +34,6 @@ export function useFfmpeg() {
     clipEnd
   ) => {
     await ffmpeg.load();
-    console.log(videoEle)
     const multi = videoEle.current.videoWidth / videoEle.current.offsetWidth;
 
     // calculate bottom crop coordinates
@@ -55,6 +54,7 @@ export function useFfmpeg() {
     await ffmpegRunTrim(ffmpeg, time1, time2, currentVideo.name, "trim.mp4");
 
     // crop the trimmed video
+    console.log(botCropCoords)
     await ffmpegRunCrop(ffmpeg, botCropCoords, "trim.mp4", "output.mp4");
 
     var outputData = ffmpeg.FS("readFile", `output.mp4`);
@@ -87,11 +87,14 @@ export function useFfmpeg() {
   ) => {
     await ffmpeg.load();
 
-    const multi = videoEle.current.videoWidth / videoEle.current.offsetWidth;
+    const multi = videoEle.current.videoHeight / videoEle.current.offsetHeight;
 
     // calculate the top and bottom crop coordinates
     const topCropCoords = calculateCropCoords(topCrop, topPos, multi, 720, 854);
     const botCropCoords = calculateCropCoords(botCrop, botPos, multi, 720, 426);
+
+    console.log(videoEle)
+    console.log(topCropCoords, botCropCoords)
 
     const time1 = new Date(clipStart * 1000).toISOString().substr(11, 8);
     const time2 = new Date(clipEnd * 1000).toISOString().substr(11, 8);
@@ -109,7 +112,6 @@ export function useFfmpeg() {
 
     var outputFileName = "output.mp4";
 
-    // create the output video
     await ffmpeg.run(
       "-i",
       "botCrop.mp4",
@@ -151,10 +153,16 @@ export function useFfmpeg() {
   };
 
   const calculateCropCoords = (crop, pos, multi, scaleX, scaleY) => {
+    // const w = crop.width;
+    // const h = crop.height;
+    // const x = pos.x;
+    // const y = pos.y;
+
     const w = crop.width * multi;
     const h = crop.height * multi;
     const x = pos.x * multi;
     const y = pos.y * multi;
+
 
     return `crop=${w}:${h}:${x}:${y},scale=${scaleX}:${scaleY}`;
   };
@@ -190,17 +198,57 @@ export function useFfmpeg() {
   }
 
   function updateOutputVideo(data) {
-    const video = document.createElement("video");
-    video.controls = true;
-    video.autoplay = true;
-    video.src = URL.createObjectURL(
-      new Blob([data.buffer], { type: "video/mp4" })
-    );
+    // const video = document.createElement("video");
+    // video.controls = true;
+    // video.autoplay = true;
+    // video.src = URL.createObjectURL(
+    //   new Blob([data.buffer], { type: "video/mp4" })
+    // );
 
     setOutputVideo(
       URL.createObjectURL(new Blob([data.buffer], { type: "video/mp4" }))
     );
   }
 
-  return { k3Templify, fullHeightify };
+  const k3Templifyv2 = async (
+    videoEle,
+    currentVideo,
+    overlay,
+    topCrop,
+    botCrop,
+    topPos,
+    botPos,
+    clipStart,
+    clipEnd
+  ) => {
+    await ffmpeg.load()
+
+    ffmpeg.FS("writeFile", currentVideo.name, await fetchFile(currentVideo));
+    console.log(topCrop, botCrop)
+    const multi = videoEle.current.videoWidth / videoEle.current.offsetWidth
+    const cropVideo = `crop=${topCrop.width}:${topCrop.height}:${topPos.x}:${topPos.y},scale=720:854`
+    const cropCam = `crop=${botCrop.width}:${botCrop.height}:${botPos.x}:${botPos.y},scale=720:426`
+    
+    console.log(currentVideo)
+     // set clip time
+     await ffmpeg.run('-ss', '10','-to', '15', '-i', currentVideo.name,  '-avoid_negative_ts', 'make_zero', '-c', 'copy', 'trim.mp4')
+
+     //crop clip 1 
+     await ffmpeg.run('-i', 'trim.mp4', '-filter:v', cropCam, '-c:v', 'libx264', '-preset', 'superfast', 'crop1.mp4')
+
+     //crop clip 2
+     await ffmpeg.run('-i', 'trim.mp4', '-filter:v', cropVideo, '-c:v', 'libx264', '-preset', 'superfast', 'crop2.mp4')
+
+     //stack the cropped clips
+     await ffmpeg.run('-i', 'crop1.mp4', '-i', 'crop2.mp4', '-filter_complex', 'vstack=inputs=2', '-c:v', 'libx264', '-preset', 'superfast', 'output.mp4')
+
+     var data = ffmpeg.FS("readFile", 'output.mp4');
+
+     setOutputVideo(
+      URL.createObjectURL(new Blob([data.buffer], { type: "video/mp4" }))
+    )
+
+  }
+
+  return { k3Templify, fullHeightify, k3Templifyv2 };
 }

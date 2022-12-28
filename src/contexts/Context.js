@@ -30,6 +30,8 @@ export function Provider({ children }) {
     //video ele
     const [videoEle, setVideoEle] = useState(null)
 
+    //loading 
+
 
     const value = {
         currentVideo, 
@@ -51,7 +53,9 @@ export function Provider({ children }) {
         fileName,
         setFileName,
         videoEle,
-        setVideoEle
+        setVideoEle,
+        loading,
+        setLoading
     }
 
     return (

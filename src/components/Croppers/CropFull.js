@@ -5,7 +5,6 @@ function CropFull() {
 
   const videoRef = useRef(null)
   const cropRef = useRef(null)
-//   const cropRefWidth = Math.floor(parseInt(cropRef.current.style.width))
 
   const [mouseDown, setMouseDown] = useState(false)
   const [initialMouse, setInitialMouse] = useState({x: 0, y: 0})
@@ -41,8 +40,6 @@ function CropFull() {
     setVideoEle
   } = UseCtx()
 
-  console.log(videoEle)
-
   const onMouseDown = (e) => {
     setMouseDown(true)
     setInitialCropPos({left: cropPos.left, top: cropPos.top})
@@ -63,45 +60,53 @@ function CropFull() {
     if (mouseDown && resizing === true) {
           setCropWidth({width: initialCropWidth + ((mouseX + mouseY) * 1.618), height: cropWidth.width * (16/9)})
           setBotCrop({width: cropWidth.width, height: cropWidth.width * (16/9)})
-          console.log(botCrop)
       }
     if (mouseDown && resizing === false) {
       //protect top left corner
       if (initialCropPos.left + mouseX < videoRef.current.offsetLeft && initialCropPos.top + mouseY < videoRef.current.offsetTop) {
         setCropPos({left: videoRef.current.offsetLeft, top: videoRef.current.offsetTop})
+        setBotPos({x: cropPos.left, y: cropPos.top})
       }
       //protect top right corner
       else if ((initialCropPos.left + cropBounds.width) + mouseX > videoBounds.width && initialCropPos.top + mouseY < videoRef.current.offsetTop) {
         setCropPos({left: videoBounds.width - cropBounds.width, top: videoRef.current.offsetTop})
+        setBotPos({x: cropPos.left, y: cropPos.top})
       }
       //protect bottom left corner
       else if (initialCropPos.left + mouseX < videoRef.current.offsetLeft && (initialCropPos.top + cropBounds.height) + mouseY > videoBounds.height) {
         setCropPos({left: videoRef.current.offsetLeft, top: videoBounds.height - cropBounds.height})
+        setBotPos({x: cropPos.left, y: cropPos.top})
       }
       //protect bottom right corner
       else if ((initialCropPos.left + cropBounds.width) + mouseX > videoBounds.width && (initialCropPos.top + cropBounds.height) + mouseY > videoBounds.height) {
         setCropPos({left: videoBounds.width - cropBounds.width, top: videoBounds.height - cropBounds.height})
+        setBotPos({x: cropPos.left, y: cropPos.top})
       }
       //protect left bounds
       else if (initialCropPos.left + mouseX < videoRef.current.offsetLeft) {
         setCropPos({left: videoRef.current.offsetLeft, top: initialCropPos.top + mouseY})
+        setBotPos({x: cropPos.left, y: cropPos.top})
       } 
       //protect right bounds
       else if ((initialCropPos.left + cropBounds.width) + mouseX > videoBounds.width) {
         setCropPos({left: videoBounds.width - cropBounds.width, top: initialCropPos.top + mouseY})
+        setBotPos({x: cropPos.left, y: cropPos.top})
       } 
       //protect top bounds
       else if (initialCropPos.top + mouseY < videoRef.current.offsetTop) {
         setCropPos({left: initialCropPos.left + mouseX, top: videoRef.current.offsetTop})
+        setBotPos({x: cropPos.left, y: cropPos.top})
       }
       //protect bottom bounds 
       else if ((initialCropPos.top + cropBounds.height) + mouseY > videoBounds.height) {
         setCropPos({left: initialCropPos.left + mouseX, top: videoBounds.height - cropBounds.height})
+        setBotPos({x: cropPos.left, y: cropPos.top})
       }
       
       else {
-        setBotPos({x: initialCropPos.left + mouseX, y: initialCropPos.top + mouseY})
         setCropPos({left: initialCropPos.left + mouseX, top: initialCropPos.top + mouseY})
+        setBotPos({x: cropPos.left, y: cropPos.top})
+        console.log(botPos)
       }
     }
   
@@ -113,7 +118,8 @@ function CropFull() {
 
     setMouseDown(false)
     setResizing(false)
-
+    setBotPos({x: cropPos.left, y: cropPos.top})
+    console.log(botPos)
     document.body.style.cursor = 'default'
 
     if(cropBounds.height > videoBounds.height) {
@@ -129,7 +135,7 @@ function CropFull() {
 
   const cropperStyle = {
     position: 'absolute',
-    border: '4px solid #F2507B',
+    border: '2px solid #F2507B',
     left: cropPos.left + 'px',
     top: cropPos.top + 'px',
     width: cropWidth.width + 'px',
@@ -137,7 +143,7 @@ function CropFull() {
     // maxHeight: (videoContainerHeight - 8) + 'px',
     // maxWidth: ((videoContainerHeight - 8) * (9/16)) + 'px',
     aspectRatio: '9/16',
-    zIndex: '4'
+    zIndex: '10'
   }
 
   const resizerStyle = {

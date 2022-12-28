@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UseCtx } from "../../../contexts/Context";
 import { useFfmpeg } from "../../../hooks/useFfmpeg";
 import CropBot from "../../Croppers/CropBot";
+import CropCam from "../../Croppers/CropCam";
 import CropTop from "../../Croppers/CropTop";
 import Trim from "../../Trim/Trim";
 import OutputModal from "./OutputModal";
@@ -20,7 +21,7 @@ function K3Template() {
   const [topCropWidth, setTopCropWidth] = useState(window.innerWidth / 4);
   const [botCropWidth, setBotCropWidth] = useState(window.innerWidth / 7);
 
-  const { k3Templify } = useFfmpeg();
+  const { k3Templify, k3Templifyv2 } = useFfmpeg();
 
   const {
     currentVideo,
@@ -32,6 +33,7 @@ function K3Template() {
     endTime,
     outputVideo,
     setFileName,
+    videoEle
   } = UseCtx();
 
   useEffect(() => {
@@ -44,8 +46,14 @@ function K3Template() {
   }, []);
 
   const makeClip = async () => {
+    // await k3Templifyv2(
+    //   videoEle,
+    //   currentVideo,
+    //   startTime,
+    //   endTime
+    // );
     await k3Templify(
-      video,
+      videoEle,
       currentVideo,
       overlay,
       topCrop,
@@ -61,7 +69,7 @@ function K3Template() {
   const videoStyle = {
     maxWidth: "80%",
     margin: "5vh 0",
-    border: "4px solid #f2507b",
+    outline: "4px solid #f2507b",
   };
   const canvasStyle = {
     width: "20%",
@@ -84,26 +92,7 @@ function K3Template() {
         <div className="video-edit-container">
           <div style={testStyle}></div>
           <div className="control-container">
-            <video
-              src={staticVid}
-              ref={video}
-              style={videoStyle}
-              controls={true}
-            />
-            <CropTop
-              cropWidth={topCropWidth}
-              video={video}
-              id={"videoCrop"}
-              aspectRatio={341 / 405}
-              borderColor={"#F2507B"}
-            />
-            <CropBot
-              cropWidth={botCropWidth}
-              video={video}
-              id={"camCrop"}
-              aspectRatio={341 / 202}
-              borderColor={"#8762D9"}
-            />
+            <CropCam />
             <Trim />
             <div className="button-container">
               <div className="left-buttons">
