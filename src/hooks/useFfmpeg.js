@@ -11,7 +11,7 @@ export function useFfmpeg() {
     log: true,
   });
 
-  const { setOutputVideo } = UseCtx();
+  const { setOutputVideo, setLoadingText, setLoading } = UseCtx();
 
   /**
    * Applies a full height template
@@ -86,7 +86,7 @@ export function useFfmpeg() {
     clipEnd
   ) => {
     await ffmpeg.load();
-
+    setLoadingText('')
     const multi = videoEle.current.videoHeight / videoEle.current.offsetHeight;
 
     // calculate the top and bottom crop coordinates
@@ -103,13 +103,13 @@ export function useFfmpeg() {
 
     // trim the video
     await ffmpegRunTrim(ffmpeg, time1, time2, currentVideo.name, "trim.mp4");
-
+    setLoadingText('trimming video...')
     // crop the trimmed video with the top coordinates
     await ffmpegRunCrop(ffmpeg, topCropCoords, "trim.mp4", "topCrop.mp4");
-
+    setLoadingText('cropping camera...')
     // crop the trimmed video with the bottom coordinates
     await ffmpegRunCrop(ffmpeg, botCropCoords, "trim.mp4", "botCrop.mp4");
-
+    setLoadingText('cropping gameplay...')
     var outputFileName = "output.mp4";
 
     await ffmpeg.run(
@@ -143,7 +143,7 @@ export function useFfmpeg() {
         "superfast",
         "output_overlay.mp4"
       );
-
+        setLoadingText('done')
       outputFileName = "output_overlay.mp4";
     }
 
@@ -198,57 +198,10 @@ export function useFfmpeg() {
   }
 
   function updateOutputVideo(data) {
-    // const video = document.createElement("video");
-    // video.controls = true;
-    // video.autoplay = true;
-    // video.src = URL.createObjectURL(
-    //   new Blob([data.buffer], { type: "video/mp4" })
-    // );
-
     setOutputVideo(
       URL.createObjectURL(new Blob([data.buffer], { type: "video/mp4" }))
     );
   }
 
-  const k3Templifyv2 = async (
-    videoEle,
-    currentVideo,
-    overlay,
-    topCrop,
-    botCrop,
-    topPos,
-    botPos,
-    clipStart,
-    clipEnd
-  ) => {
-    await ffmpeg.load()
-
-    ffmpeg.FS("writeFile", currentVideo.name, await fetchFile(currentVideo));
-    console.log(topCrop, botCrop)
-    const multi = videoEle.current.videoWidth / videoEle.current.offsetWidth
-    const cropVideo = `crop=${topCrop.width}:${topCrop.height}:${topPos.x}:${topPos.y},scale=720:854`
-    const cropCam = `crop=${botCrop.width}:${botCrop.height}:${botPos.x}:${botPos.y},scale=720:426`
-    
-    console.log(currentVideo)
-     // set clip time
-     await ffmpeg.run('-ss', '10','-to', '15', '-i', currentVideo.name,  '-avoid_negative_ts', 'make_zero', '-c', 'copy', 'trim.mp4')
-
-     //crop clip 1 
-     await ffmpeg.run('-i', 'trim.mp4', '-filter:v', cropCam, '-c:v', 'libx264', '-preset', 'superfast', 'crop1.mp4')
-
-     //crop clip 2
-     await ffmpeg.run('-i', 'trim.mp4', '-filter:v', cropVideo, '-c:v', 'libx264', '-preset', 'superfast', 'crop2.mp4')
-
-     //stack the cropped clips
-     await ffmpeg.run('-i', 'crop1.mp4', '-i', 'crop2.mp4', '-filter_complex', 'vstack=inputs=2', '-c:v', 'libx264', '-preset', 'superfast', 'output.mp4')
-
-     var data = ffmpeg.FS("readFile", 'output.mp4');
-
-     setOutputVideo(
-      URL.createObjectURL(new Blob([data.buffer], { type: "video/mp4" }))
-    )
-
-  }
-
-  return { k3Templify, fullHeightify, k3Templifyv2 };
+  return { k3Templify, fullHeightify };
 }

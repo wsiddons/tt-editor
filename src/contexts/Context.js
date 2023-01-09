@@ -7,7 +7,6 @@ export function UseCtx() {
 }
 
 export function Provider({ children }) {
-    const [loading, setLoading] = useState(true)
     const [currentVideo, setCurrentVideo] = useState(null)
 
     //crop dims
@@ -31,7 +30,8 @@ export function Provider({ children }) {
     const [videoEle, setVideoEle] = useState(null)
 
     //loading 
-
+    const [loading, setLoading] = useState(false)
+    const [loadingText, setLoadingText] = useState('')
 
     const value = {
         currentVideo, 
@@ -55,7 +55,9 @@ export function Provider({ children }) {
         videoEle,
         setVideoEle,
         loading,
-        setLoading
+        setLoading,
+        loadingText,
+        setLoadingText
     }
 
     return (

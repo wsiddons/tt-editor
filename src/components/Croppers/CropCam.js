@@ -20,7 +20,7 @@ function CropCam() {
 
   //other crop
   const [cropPos2, setCropPos2] = useState({left: 10, top: 10})
-  const [cropWidth2, setCropWidth2] = useState({width: 100 * (341 / 202), height: 100 })
+  const [cropWidth2, setCropWidth2] = useState({width: 200 * (341 / 202), height: 200 })
   const [initialCropPos2, setInitialCropPos2] = useState({left: 0, top: 0})
   const [initialCropWidth2, setInitialCropWidth2] = useState(cropWidth2.width)
 
@@ -82,6 +82,7 @@ function CropCam() {
     const mouseX = e.clientX - initialMouse.x
     const mouseY = e.clientY - initialMouse.y
     const cropBounds = cropRef.current.getBoundingClientRect()
+    const cropBounds2 = cropRef2.current.getBoundingClientRect()
     const videoBounds = videoRef.current.getBoundingClientRect()
     if (selectCrop === 'cam') {
         if (mouseDown && resizing === true) {
@@ -130,7 +131,7 @@ function CropCam() {
 
     if (selectCrop === 'focus') {
         if (mouseDown && resizing === true) {
-            setCropWidth2({width: initialCropWidth + ((mouseX + mouseY) * 1.618), height: cropWidth2.width * (16/9)})
+            setCropWidth2({width: initialCropWidth2 + ((mouseX + mouseY) * 1.618), height: cropWidth2.width * (16/9)})
             // setTopCrop({width: cropWidth2.width, height: cropWidth2.width * (341 / 405)})
         }
       if (mouseDown && resizing === false) {
@@ -147,24 +148,24 @@ function CropCam() {
           setCropPos2({left: videoRef.current.offsetLeft, top: videoBounds.height - cropBounds.height})
         }
         //protect bottom right corner
-        else if ((initialCropPos2.left + cropBounds.width) + mouseX > videoBounds.width && (initialCropPos2.top + cropBounds.height) + mouseY > videoBounds.height) {
-          setCropPos2({left: videoBounds.width - cropBounds.width, top: videoBounds.height - cropBounds.height})
+        else if ((initialCropPos2.left + cropBounds2.width) + mouseX > videoBounds.width && (initialCropPos2.top + cropBounds.height) + mouseY > videoBounds.height) {
+          setCropPos2({left: videoBounds.width - cropBounds2.width, top: videoBounds.height - cropBounds2.height})
         }
         //protect left bounds
         else if (initialCropPos2.left + mouseX < videoRef.current.offsetLeft) {
           setCropPos2({left: videoRef.current.offsetLeft, top: initialCropPos2.top + mouseY})
         } 
         //protect right bounds
-        else if ((initialCropPos2.left + cropBounds.width) + mouseX > videoBounds.width) {
-          setCropPos2({left: videoBounds.width - cropBounds.width, top: initialCropPos2.top + mouseY})
+        else if ((initialCropPos2.left + cropBounds2.width) + mouseX > videoBounds.width) {
+          setCropPos2({left: videoBounds.width - cropBounds2.width, top: initialCropPos2.top + mouseY})
         } 
         //protect top bounds
         else if (initialCropPos2.top + mouseY < videoRef.current.offsetTop) {
           setCropPos2({left: initialCropPos2.left + mouseX, top: videoRef.current.offsetTop})
         }
         //protect bottom bounds 
-        else if ((initialCropPos2.top + cropBounds.height) + mouseY > videoBounds.height) {
-          setCropPos2({left: initialCropPos2.left + mouseX, top: videoBounds.height - cropBounds.height})
+        else if ((initialCropPos2.top + cropBounds2.height) + mouseY > videoBounds.height) {
+          setCropPos2({left: initialCropPos2.left + mouseX, top: videoBounds.height - cropBounds2.height})
         }
 
         else {
@@ -263,7 +264,7 @@ function CropCam() {
         overflow: 'hidden', 
         height: '100%', 
         maxHeight: videoContainerHeight,
-        margin: '3vh',
+        margin: '4vh 6vw',
         outline: '4px solid #8762D9'
     }}
       onLoadedData={() => setVideoContainerHeight(videoRef.current.offsetHeight)}

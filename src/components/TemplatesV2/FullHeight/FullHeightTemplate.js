@@ -53,17 +53,6 @@ function FullHeightTemplate() {
     setTorf(true);
   };
 
-  const videoStyle = {
-    maxWidth: "80%",
-    margin: "5vh 0",
-    border: "4px solid #f2507b",
-  };
-  const canvasStyle = {
-    width: "20%",
-    minWidth: "300px",
-    aspectRatio: "9/16",
-  };
-
   const testStyle = {
     position: "absolute",
     top: "0px",

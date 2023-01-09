@@ -6,6 +6,7 @@ import CropBot from "../../Croppers/CropBot";
 import CropCam from "../../Croppers/CropCam";
 import CropTop from "../../Croppers/CropTop";
 import Trim from "../../Trim/Trim";
+import TrimFancy from "../../Trim/TrimFancy";
 import OutputModal from "./OutputModal";
 
 function K3Template() {
@@ -33,7 +34,10 @@ function K3Template() {
     endTime,
     outputVideo,
     setFileName,
-    videoEle
+    videoEle,
+    loading,
+    setLoading
+
   } = UseCtx();
 
   useEffect(() => {
@@ -52,6 +56,7 @@ function K3Template() {
     //   startTime,
     //   endTime
     // );
+    setLoading(true)
     await k3Templify(
       videoEle,
       currentVideo,
@@ -62,9 +67,8 @@ function K3Template() {
       botPos,
       startTime,
       endTime
-    );
-    setTorf(true);
-  };
+    )
+  }
 
   const videoStyle = {
     maxWidth: "80%",
@@ -83,17 +87,18 @@ function K3Template() {
     display: "flex",
     justifyContent: "center",
   };
-
+console.log(loading)
   return (
     <>
-      {outputVideo === null ? <></> : <OutputModal />}
+      {loading === false ? <></> : <OutputModal />}
       <>
         {/* <Nav /> */}
         <div className="video-edit-container">
           <div style={testStyle}></div>
           <div className="control-container">
             <CropCam />
-            <Trim />
+            <TrimFancy />
+            {/* <Trim /> */}
             <div className="button-container">
               <div className="left-buttons">
                 <div>

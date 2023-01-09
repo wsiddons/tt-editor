@@ -30,7 +30,7 @@ function Trim() {
   return (
     <div className="trim" style={trimStyle}>
       <div style={scrubStyle}>
-        <div id="scrubStart" style={scrubStart}></div>
+         <div id="scrubStart" style={scrubStart}></div>
         <div id="scrubEnd" style={scrubEnd}></div>
       </div>
     </div>

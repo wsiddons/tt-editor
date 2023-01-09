@@ -165,7 +165,7 @@ function CropFull() {
         overflow: 'hidden', 
         height: '100%', 
         maxHeight: videoContainerHeight,
-        margin: '3vh',
+        margin: '4vh 6vw',
         outline: '4px solid #8762D9'
     }}
       onLoadedData={() => setVideoContainerHeight(videoRef.current.offsetHeight)}
